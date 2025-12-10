@@ -56,7 +56,8 @@ cp settings.yaml ./ragtest
 
 - Change the settings files if wanted
 
-## 3. Run graph indexing 
+# Graph Extraction
+## 1. Run graph indexing 
 
 * Locally:
 
@@ -123,10 +124,13 @@ sbatch idun-scripts/idun_indexing.slurm
 - Remove from IDUNrm:
   - rm -rf graphrag-idun.tar.gz 
 
-## 4. Download graph 
+## 2. Download graph 
 ### Run download script
 * From you local workspace 
 
 ```bash
 sbatch ./download__idun.sh <job_id>
 ```
+
+
+
