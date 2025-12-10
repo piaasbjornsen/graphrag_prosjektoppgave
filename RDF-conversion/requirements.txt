@@ -1,0 +1,20 @@
+# --------- Core graph + RDF ---------
+rdflib>=7.0.0
+SPARQLWrapper>=2.0.0
+
+# --------- Data processing ---------
+pandas>=2.0.0
+pyarrow>=14.0.0
+numpy>=1.24.0
+
+# --------- Embeddings + Clustering ---------
+sentence-transformers>=3.0.0
+scikit-learn>=1.2.0
+
+# --------- Required by transformers ecosystem ---------
+torch>=2.0.0
+transformers>=4.36.0
+huggingface-hub>=0.20.0
+
+# --------- YAML configuration ---------
+pyyaml>=6.0.0
