@@ -122,3 +122,11 @@ sbatch idun-scripts/idun_indexing.slurm
     - tail -f logs/graphrag_query_<job_id>.err
 - Remove from IDUNrm:
   - rm -rf graphrag-idun.tar.gz 
+
+## 4. Download graph 
+### Run download script
+* From you local workspace 
+
+```bash
+sbatch ./download__idun.sh <job_id>
+```
