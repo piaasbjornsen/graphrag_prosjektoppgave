@@ -11,8 +11,24 @@ Usage:
 """
 
 import argparse
+import os
 import sys
 from pathlib import Path
+
+# Hardcoded paths for local runs (set before importing config)
+# These can be overridden by environment variables
+if "RDF_PIPELINE_IDUN" not in os.environ or os.environ.get("RDF_PIPELINE_IDUN") != "1":
+    # Local development paths - hardcoded
+    LOCAL_GRAPHRAG_ARTIFACTS = Path(
+        "../graphrag-idun-output/23692730_success/ragtest/output/20251206-154908/artifacts"
+    ).resolve()
+    
+    # Set environment variables that config.py will use
+    if "RDF_INPUT_DIR" not in os.environ:
+        # Use the artifacts directory as input
+        os.environ["RDF_INPUT_DIR"] = str(LOCAL_GRAPHRAG_ARTIFACTS.parent.parent.parent.parent)
+    if "GRAPHRAG_ARTIFACTS_DIR" not in os.environ:
+        os.environ["GRAPHRAG_ARTIFACTS_DIR"] = str(LOCAL_GRAPHRAG_ARTIFACTS)
 
 sys.path.insert(0, str(Path(__file__).parent))
 
