@@ -2,14 +2,14 @@
 #SBATCH --job-name=graphrag_index
 #SBATCH --partition=GPUQ
 #SBATCH --account=share-ie-idi
-#SBATCH --time=0-04:00:00          
+#SBATCH --time=2-00:00:00          # 2 days - for large datasets like novel.json
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=32G                 
-#SBATCH --gres=gpu:1               
+#SBATCH --mem=32G                  # 32GB RAM - increase for larger datasets
+#SBATCH --gres=gpu:1               # 1 GPU
 #SBATCH --output=logs/graphrag_index_%j.out
 #SBATCH --error=logs/graphrag_index_%j.err
-#SBATCH --mail-user=<username>
+#SBATCH --mail-user=<ntnu-username>@stud.ntnu.no
 #SBATCH --mail-type=ALL
 
 # Exit on error, undefined variables, and pipe failures
@@ -32,8 +32,8 @@ mkdir -p logs
 # Load required modules
 echo "Loading modules..."
 module purge
-module load Python/3.12.3-GCCcore-13.3.0                    
-module load ollama/0.6.0-GCCcore-13.3.0-CUDA-12.6.0         
+module load Python/3.12.3-GCCcore-13.3.0
+module load ollama/0.6.0-GCCcore-13.3.0-CUDA-12.6.0
 
 # Show loaded modules
 echo "Loaded modules:"
@@ -65,10 +65,11 @@ mkdir -p "$OLLAMA_MODELS"
 # Bind Ollama to localhost
 export OLLAMA_HOST=127.0.0.1:11434
 
-# CRITICAL: Increase context length to handle longer texts
-# Default is 2048 which is too small for entity extraction
-export OLLAMA_NUM_PARALLEL=4
-export OLLAMA_MAX_LOADED_MODELS=2
+# CRITICAL: Ollama parallelism settings
+# NUM_PARALLEL must match concurrent_requests in settings.yaml
+# P100-16GB can fit both models + 6 parallel KV caches (~13.3 GiB of 15.6 GiB)
+export OLLAMA_NUM_PARALLEL=6
+export OLLAMA_MAX_LOADED_MODELS=2  # Keep both LLM and embedding model loaded
 
 # Start Ollama server in background
 echo "Starting Ollama server..."
@@ -182,5 +183,4 @@ echo "Job finished: $(date)"
 echo "=========================================="
 
 exit $INDEX_EXIT_CODE
-
 
